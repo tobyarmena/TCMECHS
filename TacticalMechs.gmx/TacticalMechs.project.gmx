@@ -6,7 +6,12 @@
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
-    <sprite>sprites\spr_unit</sprite>
+    <sprites name="Test Unit">
+      <sprite>sprites\spr_unit_right</sprite>
+      <sprite>sprites\spr_unit_down</sprite>
+      <sprite>sprites\spr_unit_left</sprite>
+      <sprite>sprites\spr_unit_up</sprite>
+    </sprites>
     <sprite>sprites\spr_wall</sprite>
   </sprites>
   <backgrounds name="background"/>
@@ -14,7 +19,14 @@
   <scripts name="scripts">
     <script>scripts\scr_reset_movement_grid.gml</script>
     <script>scripts\scr_nextturn.gml</script>
+    <script>scripts\scr_wait.gml</script>
+    <script>scripts\scr_attack.gml</script>
+    <script>scripts\scr_cancel.gml</script>
+    <script>scripts\mouse_within.gml</script>
   </scripts>
+  <fonts name="fonts">
+    <font>fonts\fnt_ingame</font>
+  </fonts>
   <objects name="objects">
     <object>objects\obj_unit</object>
     <object>objects\obj_grid</object>
@@ -22,6 +34,7 @@
     <object>objects\obj_wall</object>
     <object>objects\obj_unit_control</object>
     <object>objects\obj_game_control</object>
+    <object>objects\obj_selection_window</object>
   </objects>
   <timelines name="timelines"/>
   <rooms name="rooms">

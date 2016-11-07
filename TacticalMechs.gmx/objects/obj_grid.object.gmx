@@ -36,6 +36,16 @@ for(xx = 0;xx &lt;= hcells; xx++)
         {
         movement_grid[xx,yy] = 0
         }
+        
+        
+for(xx = 0;xx &lt;= hcells; xx++)
+    for(yy = 0;yy &lt;= vcells; yy++)
+        {
+        fog_grid[xx,yy] = 0
+        }
+
+//Initiate unit grid
+unit_grid = ds_grid_create(hcells,vcells) 
 
 
 selected_unit = noone
@@ -111,7 +121,7 @@ for (xx = 0;xx &lt;= room_width/32;xx++)
         
         //draw selected unit's movements
         if global.selected_unit != noone{
-        if global.selected_unit.inAction = false
+        if global.selected_unit.inAction = false and global.selected_unit.state == "move"
             {
                 if path_exists(path_check)
                 //draw_path(path_check,selected_unit.x,selected_unit.y,false)
@@ -141,7 +151,7 @@ show_debug_overlay(true)
     
 //draw_selectable path
 if global.selected_unit != noone{
-if global.selected_unit.inAction == false  &amp;&amp; global.selected_unit.hasMoved == false
+if global.selected_unit.inAction == false  &amp;&amp; global.selected_unit.hasMoved == false and global.selected_unit.state == "move"
     {
     if path_exists(path_selecting)
         path_delete(path_selecting)
@@ -154,7 +164,7 @@ if global.selected_unit.inAction == false  &amp;&amp; global.selected_unit.hasMo
     }
     }
 draw_set_alpha(0.1)
-mp_grid_draw(map_grid)
+//mp_grid_draw(map_grid)
 draw_set_alpha(1)
 </string>
           </argument>

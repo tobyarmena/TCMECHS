@@ -29,6 +29,11 @@
 
 //turn variables
 turn = 1
+teamturn = 1
+
+//choosing states 
+state = "null"
+//states: null,move,action,direction
 </string>
           </argument>
         </arguments>
@@ -51,17 +56,37 @@ turn = 1
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if mouse_check_button_pressed(mb_left) and position_meeting(mouse_x,mouse_y,obj_unit)
+            <string>if turn%2 == 0
+    teamturn = 2
+else
+    teamturn = 1
+
+if obj_game_control.game_state == "ingame"
     {
-    global.selected_unit = instance_position(mouse_x,mouse_y,all)
-    scr_reset_movement_grid()
-    mp_grid_clear_cell(obj_grid.map_grid,global.selected_unit.selfPosX-1,global.selected_unit.selfPosY-1) 
-    }
-    
-//next turn
-if keyboard_check_pressed(vk_space)
-    {
-    scr_nextturn()
+    if mouse_check_button_pressed(mb_left) and position_meeting(mouse_x,mouse_y,obj_unit) and !instance_exists(obj_selection_window)
+        {
+        select = instance_position(mouse_x,mouse_y,par_unit)
+        if select.team == teamturn
+            {
+            global.selected_unit = select
+            scr_reset_movement_grid()
+            mp_grid_clear_cell(obj_grid.map_grid,global.selected_unit.selfPosX-1,global.selected_unit.selfPosY-1)
+            global.selected_unit.state = "move"
+            if instance_exists(obj_selection_window)
+                with (obj_selection_window)
+                    instance_destroy()
+            }
+        }
+        
+    //next turn
+    if keyboard_check_pressed(vk_space) and !instance_exists(obj_selection_window)
+        {
+        scr_nextturn()
+        with(par_unit)
+            {
+            state = "null"
+            }
+        }
     }
 </string>
           </argument>

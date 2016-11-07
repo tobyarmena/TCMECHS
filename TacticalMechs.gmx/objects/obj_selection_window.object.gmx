@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-200</depth>
+  <depth>-100</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -25,33 +25,59 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>game_state = "selection"
-team = 1
+            <string>font = fnt_ingame
 
+option[0,0] = "wait"
+option[0,1] = scr_wait
 
-//Unit Selection Grid Dimensions
-cell_size = 32
-xcells = 1
-ycells = 1
-spacing = 4
-window_height = ycells*cell_size + spacing*(ycells+1)
-
-x1 = 0
-x2 = display_get_gui_width()
-y1 = display_get_gui_height() - window_height
-y2 = display_get_gui_height()
-
-unitSelected = noone;
-//Unit Selection Data
-unitCell[0,0] = obj_unit;
-unitCell[0,1] = spr_unit_right;
+option[1,0] = "attack"
+option[1,1] = scr_attack
 
 
 
+//set dimensions of window
+button_width = 96
+button_height = 16
+
+x1 = x-view_xview[0]
+y1 = y-view_yview[0]
+
+x2 = x1+button_width
+y2 = y1+button_height*array_height_2d(option)
+
+//set dimensions of buttons
+for (i = 0;i &lt; array_height_2d(option);i ++)
+    {
+    option[i,3] = x1
+    option[i,4] = y1+(button_height*i)
+    
+    
+    
+    }
 
 
 
 </string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string></string>
           </argument>
         </arguments>
       </action>
@@ -73,28 +99,26 @@ unitCell[0,1] = spr_unit_right;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if game_state == "selection"
-{
- 
-    if mouse_check_button_released(mb_left)
+            <string>if mouse_check_button_pressed(mb_left)
     {
-        if unitSelected != noone
+    for (i = 0;i &lt; array_height_2d(option);i ++)
         {
-            if not position_meeting(mouse_x,mouse_y,par_unit) and not mouse_within(x1,x2,y1,y2)
-                {
-                unit = instance_create(floor(mouse_x/32)*32,floor(mouse_y/32)*32,unitCell[unitSelected,0])
-                unit.team = team
-                }
+        xx1 = option[i,3]+view_xview[0];xx2 = xx1 + button_width
+        yy1 = option[i,4]+view_yview[0];yy2 = yy1 + button_height
+        
+        if mouse_x &gt; xx1 and mouse_x &lt; xx2
+            if mouse_y &gt; yy1 and mouse_y &lt; yy2
+            {
+            script_execute(option[i,1])
+            }
         }
-        unitSelected = noone
     }
-}
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="0">
+    <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -111,79 +135,36 @@ unitCell[0,1] = spr_unit_right;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if game_state = "selection"
-    {
-    //draw main rectangle
-    draw_set_alpha(1)
-    draw_set_color(c_gray)
-    draw_rectangle(x1,y1,x2,y2,false)
-    
-    draw_set_color(c_white)
-    
-    for(yy = 0;yy &lt; ycells; yy++)
-        for(xx = 0;xx &lt; xcells;xx++)
-            {
-            xx1 = x1 + spacing+(xx*(spacing+cell_size))
-            yy1 = y1 + spacing+(yy*(spacing+cell_size))
-            xx2 = xx1+cell_size
-            yy2 = yy1+cell_size
-            draw_set_alpha(1)
-            draw_rectangle(xx1,yy1,xx2,yy2,false)
-            
-            draw_sprite(unitCell[xx,1],0,xx1+16,yy1+16);
-            
-            if mouse_check_button_pressed(mb_left)
-            {
-                if mouse_within(x1,x2,y1,y2) and mouse_within(xx1,xx2,yy1,yy2)
-                {
-                    unitSelected = 0;   
-                }
-            }
-            
-            
-            
-            }
+            <string>//draw rectangle
+draw_set_color(c_gray)
+draw_set_alpha(0.5)
+draw_rectangle(x1,y1,x2,y2,false)
 draw_set_alpha(1)
-    
-    
-    }
-    
-//Draw Dragging unit
-if unitSelected != noone
-{
-    draw_sprite(unitCell[unitSelected,1],0,mouse_x,mouse_y)
-}    
-    
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="9" enumb="13">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>if team == 1
+
+
+//draw text
+draw_set_font(font)
+draw_set_halign(fa_left)
+draw_set_valign(fa_top)
+for (i = 0;i &lt; array_height_2d(option);i ++)
     {
-    team = 2
+    xx1 = option[i,3];xx2 = xx1 + button_width
+    yy1 = option[i,4];yy2 = yy1 + button_height
+    
+    
+    
+    if mouse_x &gt; xx1 and mouse_x &lt; xx2
+        if mouse_y &gt; yy1 and mouse_y &lt; yy2
+            {
+            draw_set_color(c_white)
+            draw_set_alpha(0.4)
+            draw_rectangle(xx1,yy1,xx2,yy2,false)
+            }  
+    draw_set_color(c_white)
+    draw_set_alpha(1)
+    draw_text(xx1,yy1,option[i,0])   
     }
-else if team == 2
-    {
-    game_state = "ingame"
-    }
+
 </string>
           </argument>
         </arguments>
