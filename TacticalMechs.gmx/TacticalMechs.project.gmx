@@ -23,6 +23,10 @@
     <script>scripts\scr_attack.gml</script>
     <script>scripts\scr_cancel.gml</script>
     <script>scripts\mouse_within.gml</script>
+    <script>scripts\scr_up.gml</script>
+    <script>scripts\scr_down.gml</script>
+    <script>scripts\scr_left.gml</script>
+    <script>scripts\scr_right.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\fnt_ingame</font>
@@ -35,8 +39,9 @@
     <object>objects\obj_unit_control</object>
     <object>objects\obj_game_control</object>
     <object>objects\obj_selection_window</object>
+    <object>objects\obj_select_direction</object>
+    <object>objects\par_window</object>
   </objects>
-  <timelines name="timelines"/>
   <rooms name="rooms">
     <room>rooms\room0</room>
   </rooms>

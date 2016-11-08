@@ -125,11 +125,14 @@ for (xx = 0;xx &lt;= room_width/32;xx++)
             {
                 if path_exists(path_check)
                 //draw_path(path_check,selected_unit.x,selected_unit.y,false)
-                if movement_grid[xx,yy] == 1
+                if movement_grid[xx,yy] != 0
                     {
                     
                     draw_set_alpha(0.3)
+                    if movement_grid[xx,yy] == 1
                     draw_set_color(c_green)
+                    else if movement_grid[xx,yy] ==2
+                    draw_set_color(c_red)
                     draw_rectangle(
                         xx*32,
                         yy*32,

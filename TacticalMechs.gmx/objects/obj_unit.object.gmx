@@ -42,10 +42,13 @@ inAction = false;
 hasMoved = false;
 update = false;
 
+
 //state
 state = "null"//null,move,action,direction
 moves = 4;
 sightrange = 3;
+dir = "right"
+
 
 
 </string>
@@ -86,8 +89,19 @@ sightrange = 3;
             
             if path_get_length(obj_grid.path_check)/32&lt;=moves and path_get_length(obj_grid.path_check)/32&gt;0
                 {
+                
+                if place_meeting(xx*32+16,yy*32+16,par_unit)
+                    check = instance_position(xx*32+16,yy*32+16,par_unit)
+                else
+                    check = noone;
+                    
                 if xx &gt;= 0 &amp;&amp; yy &gt;= 0{
-                    obj_grid.movement_grid[xx,yy] = 1
+                        obj_grid.movement_grid[xx,yy] = 1
+                        if check != noone
+                        {
+                        obj_grid.movement_grid[xx,yy] = 2
+                        }
+                        
                     }
                 }
             
@@ -116,7 +130,24 @@ sightrange = 3;
         }
     selfPosX = floor((x+16)/32)
     selfPosY = floor((y+16)/32)
-   
+    
+    show_debug_message(string(instance_number(obj_selection_window)))
+    
+    
+    if inAction == true
+        {
+        if direction == 0
+            dir = "right"
+        else if direction == 90
+            dir = "up"
+        else if direction == 180
+            dir = "left"
+        else if direction == 270
+            dir = "down"
+        
+        }
+    //show_debug_message(direction)
+    
     //Sets actions for when path is completed
     if hasMoved == false 
         {
@@ -136,9 +167,9 @@ sightrange = 3;
         }
         
     //select action
-    if state == "action" &amp;&amp; hasMoved = false
+    if state == "action" &amp;&amp; hasMoved = false 
         {
-        if !instance_exists(obj_selection_window)
+        if !instance_exists(par_window)
             instance_create(x+16,y+16,obj_selection_window)
         }
     }
@@ -154,6 +185,16 @@ else
         mp_grid_add_cell(obj_grid.map_grid,selfPosX-1,selfPosY-1)
         }
     }
+    
+//Set sprites for direction
+if dir == "right"
+    sprite_index = spr_unit_right
+else if dir == "down"
+    sprite_index = spr_unit_down
+else if dir == "left"
+    sprite_index = spr_unit_left
+else if dir == "up"
+    sprite_index = spr_unit_up
     
 
 
